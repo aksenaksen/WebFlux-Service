@@ -1,0 +1,30 @@
+package com.example.customer.application;
+
+import com.example.customer.domain.PortfolioItem;
+import com.example.customer.domain.Ticker;
+import com.example.customer.infra.PortfolioItemRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
+
+@Component
+@RequiredArgsConstructor
+public class PortfolioUpdater {
+
+    private final PortfolioItemRepository portfolioItemRepository;
+
+    public Mono<PortfolioItem> increaseStock(PortfolioItem portfolioItem, Integer quantity) {
+        portfolioItem.increaseQuantity(quantity);
+        return portfolioItemRepository.save(portfolioItem);
+    }
+
+    public Mono<PortfolioItem> decreaseStock(PortfolioItem portfolioItem, Integer quantity) {
+        portfolioItem.decreaseQuantity(quantity);
+        return portfolioItemRepository.save(portfolioItem);
+    }
+
+    public Mono<PortfolioItem> createNewHolding(Integer customerId, Ticker ticker, Integer quantity) {
+        // TODO: PortfolioItem 생성 팩토리 메서드 필요
+        return portfolioItemRepository.save(null);
+    }
+}
