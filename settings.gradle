@@ -1,0 +1,4 @@
+rootProject.name = 'Trading'
+
+include 'customer'
+include 'aggregator'
