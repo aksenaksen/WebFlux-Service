@@ -18,4 +18,8 @@ public class Customer {
     public void decreaseBalance(Integer price){
         this.balance -= price;
     }
+
+    public void increaseBalance(Integer price){
+        this.balance += price;
+    }
 }

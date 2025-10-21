@@ -27,4 +27,8 @@ public class PortfolioItem {
     public void decreaseQuantity(Integer quantity) {
         this.quantity -= quantity;
     }
+
+    public boolean canSell(Integer quantity) {
+        return this.quantity >= quantity;
+    }
 }
