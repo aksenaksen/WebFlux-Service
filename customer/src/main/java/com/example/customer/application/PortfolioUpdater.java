@@ -23,8 +23,4 @@ public class PortfolioUpdater {
         return portfolioItemRepository.save(portfolioItem);
     }
 
-    public Mono<PortfolioItem> createNewHolding(Integer customerId, Ticker ticker, Integer quantity) {
-        // TODO: PortfolioItem 생성 팩토리 메서드 필요
-        return portfolioItemRepository.save(null);
-    }
 }

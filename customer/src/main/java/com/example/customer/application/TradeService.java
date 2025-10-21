@@ -4,8 +4,10 @@ import com.example.customer.application.in.StockTradeRequest;
 import com.example.customer.application.out.StockTradeResponse;
 import com.example.customer.domain.PortfolioItem;
 import com.example.customer.exception.InsufficientBalanceException;
+import com.example.customer.exception.InsufficientStockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -16,6 +18,7 @@ public class TradeService {
     private final PortfolioFinder portfolioFinder;
     private final TradeExecutor tradeExecutor;
 
+    @Transactional
     public Mono<StockTradeResponse> buy(Integer customerId, StockTradeRequest request) {
         return customerFinder.findById(customerId)
                 .filter(customer -> customer.canBuy(request.getTotalPrice()))
@@ -30,11 +33,25 @@ public class TradeService {
                 .map(tradeResult -> StockTradeResponse.of(tradeResult.customer(), tradeResult.portfolioItem(), request));
     }
 
+    @Transactional
+    public Mono<StockTradeResponse> sell(Integer customerId, StockTradeRequest request) {
+        return customerFinder.findById(customerId)
+                .flatMap(customer ->
+                        portfolioFinder.findByIdAndTicker(customerId, request.ticker())
+                                .filter(portfolioItem -> portfolioItem.canSell(request.quantity()))
+                                .switchIfEmpty(Mono.error(new InsufficientStockException(customerId)))
+                                .flatMap( portfolioItem ->
+                                            tradeExecutor.executeSell(customer, portfolioItem, request.price(), request.quantity())
+                                        )
+                )
+                .map( tradeResult -> StockTradeResponse.of(tradeResult.customer(), tradeResult.portfolioItem(), request));
+    }
+
     private PortfolioItem createNewPortfolioItem(Integer customerId, StockTradeRequest request) {
         return PortfolioItem.createItem(
                 customerId,
                 request.ticker(),
-                request.getTotalPrice()
+                request.quantity()
         );
     }
 }

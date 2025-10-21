@@ -18,7 +18,7 @@ public class BalanceUpdater {
     }
 
     public Mono<Customer> add(Customer customer, Integer amount) {
-        // TODO: Customer 도메인에 increaseBalance 메서드 필요
+        customer.increaseBalance(amount);
         return customerRepository.save(customer);
     }
 }
