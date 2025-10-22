@@ -6,4 +6,4 @@ spring:
       data-locations: classpath:sql/data.sql
 
 server:
-  port: 8081
+  port: 6060

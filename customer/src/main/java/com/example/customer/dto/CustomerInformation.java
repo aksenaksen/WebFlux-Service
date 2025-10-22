@@ -8,7 +8,7 @@ public record CustomerInformation(
         Integer id,
         String name,
         Integer balance,
-        List<Holding> holding
+        List<Holding> holdings
 ) {
     public static CustomerInformation of(Customer customer, List<Holding> holding){
         return new CustomerInformation(customer.getId(), customer.getName(), customer.getBalance(), holding);

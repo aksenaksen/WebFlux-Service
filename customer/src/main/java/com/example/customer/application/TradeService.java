@@ -51,7 +51,7 @@ public class TradeService {
         return PortfolioItem.createItem(
                 customerId,
                 request.ticker(),
-                request.quantity()
+                0
         );
     }
 }
