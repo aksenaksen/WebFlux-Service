@@ -148,7 +148,6 @@ http://localhost:8080/?customer=2
 - **Database**: H2 (R2DBC)
 - **Build Tool**: Gradle
 - **Test**: JUnit 5, WebTestClient
-- **Frontend**: Bootstrap 5.3.2, Vanilla JavaScript
 - **Real-time**: Server-Sent Events (SSE)
 
 ## 🏃 실행 방법
